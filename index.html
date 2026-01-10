@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>วิสาหกิจชุมชนนาข้าวแปลงใหญ่ตำบลนาพละ - ข้าวเบายอดม่วงตรัง</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+        }
+        
+        .lang-en {
+            font-family: 'Prompt', sans-serif; /* Use Prompt font for English for better readability */
+            display: none; /* Hide English by default */
+        }
+        
+        /* Custom Animations */
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background-color: #E5E7EB;
+            z-index: 0;
+        }
+        
+        /* Image Hover Effects */
+        .story-img-container { transition: transform 0.5s ease; }
+        .story-img-container:hover { transform: rotate(0deg) scale(1.02); }
+
+        /* Map Modal Animation */
+        #map-modal {
+            transition: opacity 0.3s ease-in-out;
+        }
+        #map-modal.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #map-modal:not(.hidden) {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-gray-800 overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4 text-white">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-purple-700 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md">
+                    น
+                </div>
+                <div>
+                    <h1 id="nav-title" class="font-bold text-lg leading-tight transition-colors">
+                        <span class="lang-th">นาพละ</span>
+                        <span class="lang-en">Na Phla</span>
+                    </h1>
+                    <p id="nav-subtitle" class="text-xs text-purple-100 transition-colors">
+                        <span class="lang-th">วิสาหกิจชุมชนนาข้าวแปลงใหญ่</span>
+                        <span class="lang-en">Large Scale Rice Community Enterprise</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Desktop Menu -->
+            <div id="desktop-menu" class="hidden md:flex gap-6 lg:gap-8 transition-colors text-sm lg:text-base font-medium items-center">
+                <a href="#home" class="hover:text-purple-400 transition-colors">
+                    <span class="lang-th">หน้าแรก</span><span class="lang-en">Home</span>
+                </a>
+                <a href="#about" class="hover:text-purple-400 transition-colors">
+                    <span class="lang-th">ตำนานข้าว</span><span class="lang-en">Story</span>
+                </a>
+                <a href="#product" class="hover:text-purple-400 transition-colors">
+                    <span class="lang-th">สินค้า</span><span class="lang-en">Products</span>
+                </a>
+                <a href="#learning" class="hover:text-purple-400 transition-colors">
+                    <span class="lang-th">เรียนรู้</span><span class="lang-en">Learning</span>
+                </a>
+                <a href="#process" class="hover:text-purple-400 transition-colors">
+                    <span class="lang-th">กระบวนการ</span><span class="lang-en">Process</span>
+                </a>
+                <a href="#activities" class="hover:text-purple-400 transition-colors">
+                    <span class="lang-th">กิจกรรม</span><span class="lang-en">Activities</span>
+                </a>
+                
+                <!-- Language Switcher (Desktop) -->
+                <button onclick="toggleLanguage()" class="px-3 py-1 border border-white/30 rounded-full hover:bg-white/20 transition-all text-xs font-bold flex items-center gap-1">
+                    <i data-lucide="globe" class="w-3 h-3"></i>
+                    <span class="lang-th">EN</span>
+                    <span class="lang-en">TH</span>
+                </button>
+
+                <a href="#contact" class="px-4 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-all transform hover:scale-105 shadow-lg flex items-center gap-2">
+                    <span class="lang-th">ติดต่อเรา</span><span class="lang-en">Contact</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center gap-4">
+                 <!-- Language Switcher (Mobile) -->
+                 <button onclick="toggleLanguage()" class="px-3 py-1 border border-white/30 rounded-full hover:bg-white/20 transition-all text-xs font-bold">
+                    <span class="lang-th">EN</span>
+                    <span class="lang-en">TH</span>
+                </button>
+                <button id="menu-btn" class="focus:outline-none text-white">
+                    <i data-lucide="menu" class="w-7 h-7"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white shadow-lg py-4 flex-col gap-4 px-6 md:hidden">
+            <a href="#home" class="mobile-link text-gray-700 py-2 border-b border-gray-100 block">
+                <span class="lang-th">หน้าแรก</span><span class="lang-en">Home</span>
+            </a>
+            <a href="#about" class="mobile-link text-gray-700 py-2 border-b border-gray-100 block">
+                <span class="lang-th">ตำนานข้าว</span><span class="lang-en">Rice Legend</span>
+            </a>
+            <a href="#product" class="mobile-link text-gray-700 py-2 border-b border-gray-100 block">
+                <span class="lang-th">สินค้าของเรา</span><span class="lang-en">Our Products</span>
+            </a>
+            <a href="#learning" class="mobile-link text-gray-700 py-2 border-b border-gray-100 block">
+                <span class="lang-th">การอนุรักษ์ & เรียนรู้</span><span class="lang-en">Conservation & Learning</span>
+            </a>
+            <a href="#process" class="mobile-link text-gray-700 py-2 border-b border-gray-100 block">
+                <span class="lang-th">กระบวนการ</span><span class="lang-en">Process</span>
+            </a>
+            <a href="#activities" class="mobile-link text-gray-700 py-2 border-b border-gray-100 block">
+                <span class="lang-th">กิจกรรม</span><span class="lang-en">Activities</span>
+            </a>
+            <a href="#contact" class="mobile-link text-purple-700 font-bold py-2 block">
+                <span class="lang-th">ติดต่อเรา</span><span class="lang-en">Contact Us</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="image/kopuyhjtgfrdsed.jpg" 
+                 alt="Rice Field" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-purple-900/40 to-black/30"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative z-20 text-center px-4 max-w-4xl mx-auto">
+            <div class="inline-block px-4 py-1 border border-white/50 rounded-full text-white/90 text-sm mb-6 animate-on-scroll">
+                <span class="lang-th">สินค้าสิ่งบ่งชี้ทางภูมิศาสตร์ (GI) ทะเบียนเลขที่ สช 66100212</span>
+                <span class="lang-en">Geographical Indication (GI) Reg. No. SorChor 66100212</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-xl animate-on-scroll delay-100">
+                <span class="lang-th">ข้าวเบายอดม่วงตรัง</span>
+                <span class="lang-en">Khao Bao Yod Muang</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-purple-100 mb-8 max-w-2xl mx-auto italic animate-on-scroll delay-200">
+                <span class="lang-th">"อัตลักษณ์แห่งรสชาติ มรดกจากผืนนาเมืองตรัง"</span>
+                <span class="lang-en">"The Identity of Taste, Heritage from Trang's Rice Fields"</span>
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center animate-on-scroll delay-300">
+                <a href="#about" class="px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-full font-semibold transition-all transform hover:scale-105 shadow-purple-500/50 shadow-lg flex items-center justify-center gap-2">
+                    <span class="lang-th">อ่านตำนานข้าว</span>
+                    <span class="lang-en">Read The Story</span>
+                    <i data-lucide="book-open" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll Down Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-white/70">
+            <div class="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center p-1">
+                <div class="w-1 h-3 bg-white rounded-full"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Storytelling Section -->
+    <section id="about" class="py-24 bg-stone-100 relative overflow-hidden">
+        <!-- Decorative Background -->
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-purple-50/50 -z-10 rounded-l-full transform translate-x-1/3"></div>
+        
+        <div class="container mx-auto px-4">
+            <!-- The Hook Quote -->
+            <div class="max-w-4xl mx-auto text-center mb-20 animate-on-scroll">
+                <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-8 leading-tight">
+                    <span class="lang-th">
+                        "พัทลุงมีดอน นครมีท่า <br class="hidden md:inline" />
+                        <span class="text-purple-700 relative inline-block">
+                            ตรังมีนา
+                            <svg class="absolute w-full h-3 -bottom-1 left-0 text-yellow-400 opacity-60" viewBox="0 0 100 10" preserveAspectRatio="none">
+                                <path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="8" fill="none" />
+                            </svg>
+                        </span> สงขลามีบ่อ"
+                    </span>
+                    <span class="lang-en">
+                        "Phatthalung has Don, Nakhon has Tha, <br class="hidden md:inline" />
+                        <span class="text-purple-700 relative inline-block">
+                            Trang has Rice Fields
+                            <svg class="absolute w-full h-3 -bottom-1 left-0 text-yellow-400 opacity-60" viewBox="0 0 100 10" preserveAspectRatio="none">
+                                <path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="8" fill="none" />
+                            </svg>
+                        </span>, Songkhla has Bo"
+                    </span>
+                </h2>
+                <p class="text-xl text-gray-600 italic font-light">
+                    <span class="lang-th">คำกล่าวขานโบราณที่มิใช่เพียงคำคล้องจอง แต่คือหลักฐานแห่งความอุดมสมบูรณ์ของผืนนาเมืองตรัง แหล่งกำเนิดของข้าวพันธุ์พื้นเมืองอันเลื่องชื่อ</span>
+                    <span class="lang-en">An ancient saying that is not just a rhyme, but evidence of the abundance of Trang's rice fields, the birthplace of this renowned indigenous rice variety.</span>
+                </p>
+            </div>
+
+            <!-- Story Chapter 1: Legacy -->
+            <div class="flex flex-col md:flex-row items-center gap-16 mb-24 animate-on-scroll delay-100">
+                <div class="md:w-1/2">
+                    <div class="story-img-container relative rounded-2xl overflow-hidden shadow-2xl rotate-2">
+                        <img src="image/kkophtt.jpg" alt="ทุ่งนาโบราณ" class="w-full h-[450px] object-cover">
+                        <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent">
+                            <span class="text-white font-bold text-lg border-l-4 border-yellow-400 pl-3">
+                                <span class="lang-th">มรดกนับ 100 ปี</span>
+                                <span class="lang-en">100 Years of Heritage</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 space-y-6">
+                    <div class="flex items-center gap-3 text-purple-700 font-bold uppercase tracking-wider text-sm">
+                        <span class="w-8 h-px bg-purple-700"></span>
+                        <span class="lang-th">บทที่ 1 : รากเหง้า</span>
+                        <span class="lang-en">Chapter 1 : The Roots</span>
+                    </div>
+                    <h3 class="text-4xl font-bold text-gray-900">
+                        <span class="lang-th">จากป่าฝนสู่ผืนนา</span>
+                        <span class="lang-en">From Rainforest to Rice Field</span>
+                    </h3>
+                    <p class="text-gray-600 text-lg leading-relaxed">
+                        <span class="lang-th">"ข้าวเบายอดม่วง" ไม่ใช่เพียงข้าวทั่วไป แต่คือลมหายใจของชาวนาตรังที่สืบทอดกันมากว่าศตวรรษ เป็นข้าวพันธุ์พื้นเมืองดั้งเดิมที่หยั่งรากสู้แดนฝนเมืองใต้ ปรับตัวเข้ากับสภาพนิเวศป่าฝนเทือกเขาบรรทัดจนกลายเป็นเอกลักษณ์เฉพาะถิ่นที่ไม่สามารถลอกเลียนแบบได้</span>
+                        <span class="lang-en">"Khao Bao Yod Muang" is not just ordinary rice, but the breath of Trang farmers passed down for over a century. It is an indigenous variety that has taken root in the rainy south, adapting to the rainforest ecosystem of the Banthat Mountain Range until becoming a unique local identity that cannot be replicated.</span>
+                    </p>
+                    <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-500">
+                        <span class="lang-th">"ข้าวตรังสมัยก่อนที่มีรสชาติดีที่สุด คือ ข้าวเบายอดม่วง" — คำบอกเล่าจากผู้เฒ่าผู้แก่ในอำเภอปะเหลียน</span>
+                        <span class="lang-en">"The best-tasting Trang rice of the old days was Khao Bao Yod Muang" — Elders of Palian District.</span>
+                    </blockquote>
+                </div>
+            </div>
+
+            <!-- Story Chapter 2: The Name & Wisdom -->
+            <div class="flex flex-col md:flex-row-reverse items-center gap-16 mb-24 animate-on-scroll delay-200">
+                <div class="md:w-1/2">
+                     <div class="story-img-container relative rounded-2xl overflow-hidden shadow-2xl -rotate-2">
+                        <img src="image/kktyuoik.jpg" alt="รวงข้าวสีม่วง" class="w-full h-[450px] object-cover">
+                        <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent">
+                            <span class="text-white font-bold text-lg border-l-4 border-yellow-400 pl-3">
+                                <span class="lang-th">ความลับของ "ยอดม่วง"</span>
+                                <span class="lang-en">The Secret of "Yod Muang"</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 space-y-6">
+                    <div class="flex items-center gap-3 text-purple-700 font-bold uppercase tracking-wider text-sm">
+                         <span class="w-8 h-px bg-purple-700"></span>
+                         <span class="lang-th">บทที่ 2 : ชื่อนั้นสำคัญไฉน</span>
+                         <span class="lang-en">Chapter 2 : What's in a Name?</span>
+                    </div>
+                    <h3 class="text-4xl font-bold text-gray-900">
+                        <span class="lang-th">ทำไมต้อง "เบายอดม่วง"?</span>
+                        <span class="lang-en">Why "Bao Yod Muang"?</span>
+                    </h3>
+                    <p class="text-gray-600 text-lg leading-relaxed">
+                        <span class="lang-th">ชื่อนี้สะท้อนอัตลักษณ์อย่างแท้จริง <strong>"เบา"</strong> หมายถึงข้าวนาปีที่เก็บเกี่ยวเร็ว ส่วน <strong>"ยอดม่วง"</strong> มาจากปรากฏการณ์ธรรมชาติที่น่าทึ่ง เมื่อเปลือกเมล็ดข้าวแก่จัด จะเปลี่ยนจากสีเขียวเป็น <strong>สีม่วงเข้ม</strong> คล้ายกับสียอดอ่อนของมะม่วงเบา</span>
+                        <span class="lang-en">The name truly reflects its identity. <strong>"Bao"</strong> refers to seasonal rice that is harvested early. <strong>"Yod Muang"</strong> comes from an amazing natural phenomenon: when the rice husk matures, it changes from green to <strong>deep purple</strong>, resembling the color of young mango shoots.</span>
+                    </p>
+                    <div class="bg-white p-6 rounded-xl border-l-4 border-purple-600 shadow-sm mt-4">
+                        <h4 class="font-bold text-gray-900 mb-2 flex items-center gap-2">
+                            <i data-lucide="sparkles" class="text-yellow-500 w-5 h-5"></i> 
+                            <span class="lang-th">ภูมิปัญญา "แม่รวง"</span>
+                            <span class="lang-en">"Mae Ruang" Wisdom</span>
+                        </h4>
+                        <p class="text-gray-600">
+                            <span class="lang-th">เคล็ดลับความบริสุทธิ์ของสายพันธุ์อยู่ที่การคัดเลือกด้วยวิธี "แม่รวง" ชาวนาจะเลือกเก็บรวงข้าวที่สมบูรณ์ที่สุด จากหน่อแรกที่สูงที่สุดในกอ เพื่อเก็บไว้ทำพันธุ์ในปีถัดไป เป็นภูมิปัญญาที่ส่งต่อมารุ่นสู่รุ่น</span>
+                            <span class="lang-en">The secret to the purity of the variety lies in the "Mae Ruang" (Mother Ear) selection method. Farmers select the most perfect rice ears from the tallest first shoots of the clump to save for the next year's seeds, a wisdom passed down through generations.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Story Chapter 3: Community Faith -->
+             <div class="flex flex-col md:flex-row items-center gap-16 animate-on-scroll delay-300">
+                <div class="md:w-1/2">
+                    <div class="story-img-container relative rounded-2xl overflow-hidden shadow-2xl rotate-2">
+                        <img src="image/loplikjogthyu.jpg" alt="วิถีชุมชน" class="w-full h-[450px] object-cover">
+                        <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent">
+                            <span class="text-white font-bold text-lg border-l-4 border-yellow-400 pl-3">
+                                <span class="lang-th">พลังศรัทธาชุมชน</span>
+                                <span class="lang-en">Community Faith</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 space-y-6">
+                    <div class="flex items-center gap-3 text-purple-700 font-bold uppercase tracking-wider text-sm">
+                         <span class="w-8 h-px bg-purple-700"></span>
+                         <span class="lang-th">บทที่ 3 : วิถีนาพละ</span>
+                         <span class="lang-en">Chapter 3 : The Way of Na Phla</span>
+                    </div>
+                    <h3 class="text-4xl font-bold text-gray-900">
+                        <span class="lang-th">จากผืนนาสู่ศรัทธา</span>
+                        <span class="lang-en">From Fields to Faith</span>
+                    </h3>
+                    <p class="text-gray-600 text-lg leading-relaxed">
+                        <span class="lang-th">ณ ตำบลนาพละ ความผูกพันระหว่างคนกับข้าวหยั่งรากลึก สะท้อนผ่านประเพณี <strong>"รับขวัญข้าวใหม่"</strong> ที่ชาวนาจะนำข้าวที่เพิ่งเก็บเกี่ยวมาถวายบูชาพระรัตนตรัย เพื่อขอบคุณผืนดินและฟ้าฝน</span>
+                        <span class="lang-en">At Na Phla sub-district, the bond between people and rice runs deep, reflected in the <strong>"Rab Khwan Khao Mai"</strong> (Blessing of New Rice) tradition, where farmers offer newly harvested rice to worship the Triple Gem, thanking the earth and the rain.</span>
+                    </p>
+                    <p class="text-gray-600 text-lg leading-relaxed">
+                         <span class="lang-th">วิสาหกิจชุมชนนาข้าวแปลงใหญ่ตำบลนาพละ จึงไม่ใช่แค่ผู้ผลิต แต่คือผู้พิทักษ์วัฒนธรรม ที่มุ่งมั่นส่งต่อ "ข้าวที่มีชีวิต" และ "เรื่องราว" สู่จานอาหารของคุณ</span>
+                         <span class="lang-en">The Na Phla Large Scale Rice Community Enterprise is not just a producer, but a guardian of culture, dedicated to delivering "living rice" and its "stories" to your plate.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Detail Section -->
+    <section id="product" class="py-20 bg-white relative">
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-16 animate-on-scroll">
+                <span class="text-purple-600 font-bold tracking-wider uppercase text-sm">Product Detail</span>
+                <h2 class="text-4xl font-bold text-gray-900 mt-2">
+                    <span class="lang-th">คุณค่าจากธรรมชาติ</span>
+                    <span class="lang-en">Natural Value</span>
+                </h2>
+                <div class="w-24 h-1 bg-purple-500 mx-auto rounded-full mt-4"></div>
+            </div>
+
+            <!-- Characteristics Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+                <!-- Image & GI Tag -->
+                <div class="relative animate-on-scroll">
+                    <img src="image/lightricewith.jpeg" 
+                         alt="ข้าวเบายอดม่วง" 
+                         class="rounded-2xl shadow-2xl w-full h-[500px] object-cover">
+                    <div class="absolute top-4 right-4 bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full font-bold shadow-lg flex items-center gap-2">
+                        <i data-lucide="award" class="w-5 h-5"></i> 
+                        <span class="lang-th">สินค้า GI ลำดับที่ 3 ของตรัง</span>
+                        <span class="lang-en">Trang's 3rd GI Product</span>
+                    </div>
+                </div>
+
+                <!-- Info & Stats -->
+                <div class="space-y-8 animate-on-scroll delay-100">
+                    <!-- Physical Traits -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                            <i data-lucide="search" class="text-purple-600"></i> 
+                            <span class="lang-th">ลักษณะเด่นทางกายภาพ</span>
+                            <span class="lang-en">Physical Characteristics</span>
+                        </h3>
+                        <div class="bg-purple-50 rounded-xl p-6 border border-purple-100">
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-3">
+                                    <span class="w-3 h-3 mt-2 bg-purple-700 rounded-full shrink-0"></span>
+                                    <div>
+                                        <span class="font-bold text-gray-800">
+                                            <span class="lang-th">ข้าวเปลือก:</span><span class="lang-en">Paddy:</span>
+                                        </span>
+                                        <span class="text-gray-600">
+                                            <span class="lang-th">สีฟางเข้ม ปลายเปลือกสีม่วงเข้ม</span>
+                                            <span class="lang-en">Dark straw color, dark purple tip.</span>
+                                        </span>
+                                    </div>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="w-3 h-3 mt-2 bg-gradient-to-r from-red-700 to-white rounded-full shrink-0"></span>
+                                    <div>
+                                        <span class="font-bold text-gray-800">
+                                            <span class="lang-th">ข้าวสาร 2 สีในหนึ่งเดียว:</span><span class="lang-en">Two-tone Rice:</span>
+                                        </span>
+                                        <span class="text-gray-600">
+                                            <span class="lang-th">มีทั้งเมล็ดสีขาวขุ่นและสีแดง ผสมผสานรสสัมผัสที่ลงตัว</span>
+                                            <span class="lang-en">Contains both milky white and red grains, blending a perfect texture.</span>
+                                        </span>
+                                    </div>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="w-3 h-3 mt-2 bg-orange-400 rounded-full shrink-0"></span>
+                                    <div>
+                                        <span class="font-bold text-gray-800">
+                                            <span class="lang-th">รสสัมผัส:</span><span class="lang-en">Texture:</span>
+                                        </span>
+                                        <span class="text-gray-600">
+                                            <span class="lang-th">เหนียวนุ่ม มันวาว ไม่กรุบกระด้าง รสชาติดีและหอม</span>
+                                            <span class="lang-en">Sticky, soft, glossy, not hard. Good taste and fragrant.</span>
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Nutrition Stats -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                            <i data-lucide="activity" class="text-green-600"></i> 
+                            <span class="lang-th">คุณค่าทางโภชนาการ</span>
+                            <span class="lang-en">Nutritional Value</span>
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                <div class="text-3xl font-bold text-green-600 mb-1">2.45 <span class="text-sm text-gray-500 font-normal">mg/g</span></div>
+                                <div class="text-sm font-semibold text-gray-700">
+                                    <span class="lang-th">สารฟีนอลิก (Phenolic)</span><span class="lang-en">Phenolic Compounds</span>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-2">
+                                    <span class="lang-th">ช่วยต้านอนุมูลอิสระ</span><span class="lang-en">Antioxidant properties</span>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                <div class="text-3xl font-bold text-purple-600 mb-1">66.67<span class="text-sm text-gray-500 font-normal">%</span></div>
+                                <div class="text-sm font-semibold text-gray-700">
+                                    <span class="lang-th">การต้านอนุมูลอิสระ</span><span class="lang-en">Antioxidant Activity</span>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-2">
+                                    <span class="lang-th">ป้องกันโรคหลอดเลือดหัวใจ</span><span class="lang-en">Prevents cardiovascular disease</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Processed Products -->
+            <div class="bg-stone-50 rounded-2xl p-8 animate-on-scroll">
+                <h3 class="text-2xl font-bold text-center mb-8">
+                    <span class="lang-th">ผลิตภัณฑ์แปรรูปจากชุมชน</span>
+                    <span class="lang-en">Community Processed Products</span>
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <div class="group cursor-pointer">
+                        <div class="w-20 h-20 mx-auto bg-white rounded-full shadow-md flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-purple-100 transition-all">
+                            <i data-lucide="cookie" class="w-8 h-8 text-orange-500"></i>
+                        </div>
+                        <span class="font-medium text-gray-700">
+                            <span class="lang-th">คุกกี้แป้งข้าว</span><span class="lang-en">Rice Flour Cookies</span>
+                        </span>
+                    </div>
+                    <div class="group cursor-pointer">
+                        <div class="w-20 h-20 mx-auto bg-white rounded-full shadow-md flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-purple-100 transition-all">
+                            <i data-lucide="cake-slice" class="w-8 h-8 text-pink-500"></i>
+                        </div>
+                        <span class="font-medium text-gray-700">
+                            <span class="lang-th">เค้กข้าวเบายอดม่วง</span><span class="lang-en">Rice Cake</span>
+                        </span>
+                    </div>
+                    <div class="group cursor-pointer">
+                        <div class="w-20 h-20 mx-auto bg-white rounded-full shadow-md flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-purple-100 transition-all">
+                            <i data-lucide="glass-water" class="w-8 h-8 text-blue-500"></i>
+                        </div>
+                        <span class="font-medium text-gray-700">
+                            <span class="lang-th">น้ำข้าวเบายอดม่วง</span><span class="lang-en">Rice Drink</span>
+                        </span>
+                    </div>
+                    <div class="group cursor-pointer">
+                        <div class="w-20 h-20 mx-auto bg-white rounded-full shadow-md flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-purple-100 transition-all">
+                            <i data-lucide="utensils" class="w-8 h-8 text-green-500"></i>
+                        </div>
+                        <span class="font-medium text-gray-700">
+                            <span class="lang-th">ซูชิ (เมนูอนาคต)</span><span class="lang-en">Sushi (Future Menu)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning & Conservation Section -->
+    <section id="learning" class="py-20 bg-stone-50 relative overflow-hidden border-t border-purple-100">
+        <div class="absolute top-0 left-0 w-32 h-32 bg-green-100 rounded-br-full -z-0 opacity-50"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <!-- Header -->
+            <div class="text-center mb-16 animate-on-scroll">
+                <span class="text-green-600 font-bold tracking-wider uppercase text-sm">Conservation & Education</span>
+                <h2 class="text-3xl font-bold text-gray-900 mt-2">
+                    <span class="lang-th">การอนุรักษ์พันธุกรรมข้าวสู่เยาวชน</span>
+                    <span class="lang-en">Rice Genetic Conservation for Youth</span>
+                </h2>
+                <div class="w-24 h-1 bg-green-500 mx-auto rounded-full mt-4"></div>
+                <p class="text-gray-600 mt-6 text-lg max-w-2xl mx-auto italic">
+                    <span class="lang-th">"เพราะอนาคตของข้าว คืออนาคตของลูกหลาน" <br> เรามุ่งมั่นถ่ายทอดจิตวิญญาณชาวนาและการอนุรักษ์พันธุ์ข้าวเบายอดม่วงสู่คนรุ่นใหม่</span>
+                    <span class="lang-en">"Because the future of rice is the future of our children." <br> We are committed to passing on the spirit of farmers and the conservation of Khao Bao Yod Muang to the new generation.</span>
+                </p>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Text Content -->
+                <div class="space-y-8 animate-on-scroll delay-100">
+                    <!-- Wisdom Transmission -->
+                    <div class="flex gap-4 group">
+                        <div class="flex-shrink-0">
+                            <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 group-hover:scale-110 transition-transform shadow-sm">
+                                <i data-lucide="book-open" class="w-7 h-7"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-green-700 transition-colors">
+                                <span class="lang-th">ห้องเรียนอนุรักษ์พันธุกรรม</span>
+                                <span class="lang-en">Genetic Conservation Classroom</span>
+                            </h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                <span class="lang-th">เปิดพื้นที่นาให้เป็นห้องเรียนมีชีวิต เด็กๆ จะได้เรียนรู้ตั้งแต่วิธีการคัดเลือก <strong>"แม่รวง"</strong> (การเก็บรักษาพันธุกรรมข้าวบริสุทธิ์) ที่เป็นภูมิปัญญาดั้งเดิมกว่า 100 ปี เพื่อปลูกฝังจิตสำนึกในการหวงแหนและอนุรักษ์สายพันธุ์ข้าวท้องถิ่นไม่ให้สูญหาย</span>
+                                <span class="lang-en">Turning rice fields into living classrooms. Children learn the <strong>"Mae Ruang"</strong> selection method (preserving pure rice genetics), a 100-year-old wisdom, to instill a consciousness of cherishing and conserving local rice varieties.</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Hands-on -->
+                    <div class="flex gap-4 group">
+                        <div class="flex-shrink-0">
+                            <div class="w-14 h-14 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 group-hover:scale-110 transition-transform shadow-sm">
+                                <i data-lucide="users" class="w-7 h-7"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-yellow-700 transition-colors">
+                                <span class="lang-th">ยุวเกษตรกรรุ่นใหม่</span>
+                                <span class="lang-en">Young Farmers</span>
+                            </h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                <span class="lang-th">สนับสนุนให้เด็กและเยาวชนมีส่วนร่วมในทุกขั้นตอน ตั้งแต่การเตรียมดิน ปักดำ ไปจนถึงการแปรรูป สร้างความภาคภูมิใจและรายได้เสริม พร้อมปลูกฝังหัวใจรักษ์สิ่งแวดล้อมให้เติบโตไปพร้อมกับต้นข้าว</span>
+                                <span class="lang-en">Encouraging youth participation in every step, from soil preparation and planting to processing. This creates pride and supplementary income while cultivating an eco-friendly heart that grows along with the rice.</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Culture -->
+                    <div class="flex gap-4 group">
+                        <div class="flex-shrink-0">
+                            <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform shadow-sm">
+                                <i data-lucide="heart-handshake" class="w-7 h-7"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-purple-700 transition-colors">
+                                <span class="lang-th">สืบสานศรัทธา</span>
+                                <span class="lang-en">Continuing Faith</span>
+                            </h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                <span class="lang-th">ดึงลูกหลานเข้าร่วมประเพณีท้องถิ่น เช่น <strong>"รับขวัญข้าวใหม่"</strong> และ <strong>"ลากพระ"</strong> เพื่อให้ตำนานข้าวเบายอดม่วงไม่ได้อยู่แค่ในแปลงนา แต่อยู่ในวิถีชีวิตและจิตใจของชาวนาพละทุกคนอย่างยั่งยืน</span>
+                                <span class="lang-en">Engaging descendants in local traditions like <strong>"Rice Blessing"</strong> and <strong>"Pulling the Buddha Image"</strong> to ensure the legend of Khao Bao Yod Muang lives not just in the fields, but in the lifestyle and hearts of all Na Phla people sustainably.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Grid -->
+                <div class="relative animate-on-scroll delay-200">
+                    <div class="grid grid-cols-2 gap-4">
+                        <img src="image/hongrean.jpg" 
+                             alt="เด็กเรียนรู้" class="rounded-2xl shadow-lg w-full h-64 object-cover transform translate-y-8 hover:-translate-y-2 transition-transform duration-500">
+                        <img src="image/nukrean.jpg" 
+                             alt="มือปลูกข้าว" class="rounded-2xl shadow-lg w-full h-64 object-cover hover:-translate-y-2 transition-transform duration-500">
+                    </div>
+                    <!-- Decorative Circle -->
+                    <div class="absolute -z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-white rounded-full blur-3xl opacity-40"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Timeline Section -->
+    <section id="process" class="py-20 bg-stone-900 text-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-3xl font-bold">
+                    <span class="lang-th">กระบวนการผลิตที่ใส่ใจ</span>
+                    <span class="lang-en">Attentive Production Process</span>
+                </h2>
+                <p class="text-gray-400 mt-2">
+                    <span class="lang-th">ตามมาตรฐานสิ่งบ่งชี้ทางภูมิศาสตร์ (GI)</span>
+                    <span class="lang-en">According to Geographical Indication (GI) Standards</span>
+                </p>
+            </div>
+
+            <div class="relative max-w-4xl mx-auto">
+                <div class="timeline-line hidden md:block bg-stone-700"></div>
+                
+                <!-- Step 1 -->
+                <div class="relative flex flex-col md:flex-row items-center gap-8 mb-12 animate-on-scroll delay-100">
+                    <div class="md:w-1/2 text-center md:text-right order-2 md:order-1">
+                        <h3 class="text-xl font-bold text-purple-400">
+                            <span class="lang-th">การเตรียมพันธุ์และดิน</span>
+                            <span class="lang-en">Seed & Soil Preparation</span>
+                        </h3>
+                        <p class="text-sm text-gray-300 mt-2">
+                            <span class="lang-th">เลือกเมล็ดพันธุ์คุณภาพจากแหล่งที่น่าเชื่อถือ เตรียมดินด้วยการไถดะ ไถแปร เพื่อปรับสภาพดินให้เหมาะสม</span>
+                            <span class="lang-en">Selecting quality seeds from reliable sources. Preparing soil by plowing and harrowing to adjust soil conditions suitable for planting.</span>
+                        </p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center z-10 shrink-0 border-4 border-stone-800 order-1 md:order-2">
+                        <span class="font-bold">1</span>
+                    </div>
+                    <div class="md:w-1/2 order-3 text-gray-500 text-sm hidden md:block">
+                        <span class="lang-th">ดินเหนียวและดินร่วนปนทราย</span>
+                        <span class="lang-en">Clay and sandy loam soil</span>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative flex flex-col md:flex-row items-center gap-8 mb-12 animate-on-scroll delay-200">
+                    <div class="md:w-1/2 text-gray-500 text-sm text-right hidden md:block order-1">
+                        <span class="lang-th">วิธี: ปักดำ, หว่านน้ำตม, หยอดข้าวแห้ง</span>
+                        <span class="lang-en">Method: Transplanting, Wet broadcasting, Dry drilling</span>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center z-10 shrink-0 border-4 border-stone-800 order-1 md:order-2">
+                        <span class="font-bold">2</span>
+                    </div>
+                    <div class="md:w-1/2 text-center md:text-left order-2 md:order-3">
+                        <h3 class="text-xl font-bold text-purple-400">
+                            <span class="lang-th">ฤดูกาลปลูก</span>
+                            <span class="lang-en">Planting Season</span>
+                        </h3>
+                        <p class="text-sm text-gray-300 mt-2">
+                            <span class="lang-th">
+                                <span class="block">• ปักดำ/หว่าน: สิงหาคม - กันยายน</span>
+                                <span class="block">• หยอดข้าวแห้ง: มิถุนายน - กรกฎาคม</span>
+                            </span>
+                            <span class="lang-en">
+                                <span class="block">• Transplanting/Sowing: Aug - Sep</span>
+                                <span class="block">• Dry drilling: Jun - Jul</span>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative flex flex-col md:flex-row items-center gap-8 mb-12 animate-on-scroll delay-300">
+                    <div class="md:w-1/2 text-center md:text-right order-2 md:order-1">
+                        <h3 class="text-xl font-bold text-purple-400">
+                            <span class="lang-th">การดูแลรักษา</span>
+                            <span class="lang-en">Maintenance</span>
+                        </h3>
+                        <p class="text-sm text-gray-300 mt-2">
+                            <span class="lang-th">ควบคุมระดับน้ำ 10-30 ซม. ใส่ปุ๋ยบำรุงตามระยะ กำจัดวัชพืชด้วยวิธีที่ไม่ส่งผลเสียต่อข้าว</span>
+                            <span class="lang-en">Control water level at 10-30 cm. Apply fertilizer periodically. Eliminate weeds without harming the rice.</span>
+                        </p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center z-10 shrink-0 border-4 border-stone-800 order-1 md:order-2">
+                        <span class="font-bold">3</span>
+                    </div>
+                    <div class="md:w-1/2 order-3 hidden md:block"></div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative flex flex-col md:flex-row items-center gap-8 animate-on-scroll">
+                    <div class="md:w-1/2 hidden md:block order-1"></div>
+                    <div class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center z-10 shrink-0 border-4 border-stone-800 order-1 md:order-2">
+                        <span class="font-bold">4</span>
+                    </div>
+                    <div class="md:w-1/2 text-center md:text-left order-2 md:order-3">
+                        <h3 class="text-xl font-bold text-green-400">
+                            <span class="lang-th">การเก็บเกี่ยว</span>
+                            <span class="lang-en">Harvesting</span>
+                        </h3>
+                        <p class="text-sm text-gray-300 mt-2">
+                             <span class="lang-th">ช่วงมกราคม - กุมภาพันธ์ (สำหรับนาดำ) เก็บเกี่ยวเมื่อข้าวสุกแก่เต็มที่ นวดและลดความชื้นไม่เกิน 15%</span>
+                             <span class="lang-en">January - February (for transplanted rice). Harvest when fully ripe. Thresh and reduce moisture to no more than 15%.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards & Community Section -->
+    <section id="awards" class="py-20 bg-stone-100">
+        <div class="container mx-auto px-4">
+             <div class="text-center mb-12 animate-on-scroll">
+                <h2 class="text-3xl font-bold text-gray-900">
+                    <span class="lang-th">รางวัลและความภาคภูมิใจ</span>
+                    <span class="lang-en">Awards & Pride</span>
+                </h2>
+                <p class="text-gray-500 mt-2">
+                    <span class="lang-th">เครื่องหมายการันตีคุณภาพและความมุ่งมั่นของชุมชน</span>
+                    <span class="lang-en">A guarantee of quality and community commitment</span>
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- GAP Standard -->
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center border-t-4 border-yellow-500 animate-on-scroll hover:transform hover:-translate-y-2 transition-transform duration-300">
+                    <i data-lucide="award" class="w-12 h-12 mx-auto text-yellow-500 mb-4"></i>
+                    <h3 class="font-bold text-lg mb-2">
+                        <span class="lang-th">มาตรฐาน GAP</span>
+                        <span class="lang-en">GAP Standard</span>
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-2">
+                        <span class="lang-th">ได้รับการรับรองการปฏิบัติทางการเกษตรที่ดี</span>
+                        <span class="lang-en">Certified Good Agricultural Practices</span>
+                    </p>
+                    <p class="text-gray-500 text-xs">(Good Agricultural Practices)</p>
+                </div>
+
+                <!-- GI Standard -->
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center border-t-4 border-purple-500 animate-on-scroll delay-100 hover:transform hover:-translate-y-2 transition-transform duration-300">
+                    <i data-lucide="ribbon" class="w-12 h-12 mx-auto text-purple-500 mb-4"></i>
+                    <h3 class="font-bold text-lg mb-2">
+                        <span class="lang-th">สิ่งบ่งชี้ทางภูมิศาสตร์ (GI)</span>
+                        <span class="lang-en">Geographical Indication (GI)</span>
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-1">
+                        <span class="lang-th">ขึ้นทะเบียนเมื่อ 14 กันยายน 2565</span>
+                        <span class="lang-en">Registered on September 14, 2022</span>
+                    </p>
+                    <p class="text-purple-600 font-semibold text-sm">
+                        <span class="lang-th">ทะเบียนเลขที่ สช 66100212</span>
+                        <span class="lang-en">Reg No. SorChor 66100212</span>
+                    </p>
+                </div>
+
+                <!-- Good Seed Award with Image -->
+                <div class="bg-white rounded-lg shadow-lg text-center border-t-4 border-green-500 animate-on-scroll delay-200 hover:transform hover:-translate-y-2 transition-transform duration-300 overflow-hidden">
+                    <div class="h-40 overflow-hidden relative group">
+                         <img src="image/rangwun.jpg" 
+                              alt="รางวัลเมล็ดพันธุ์" 
+                              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                         <div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors"></div>
+                    </div>
+                    <div class="p-6">
+                        <div class="-mt-12 mb-4 relative z-10">
+                            <div class="w-12 h-12 mx-auto bg-white rounded-full flex items-center justify-center shadow-md">
+                                <i data-lucide="sprout" class="w-6 h-6 text-green-500"></i>
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">
+                            <span class="lang-th">รางวัลเมล็ดพันธุ์ดี</span>
+                            <span class="lang-en">Good Seed Award</span>
+                        </h3>
+                        <p class="text-gray-600 text-sm">
+                            <span class="lang-th">รางวัลรองชนะเลิศอันดับ 2</span>
+                            <span class="lang-en">2nd Runner-up Award</span>
+                        </p>
+                        <p class="text-gray-500 text-xs mt-1">
+                            <span class="lang-th">การประกวดเมล็ดพันธุ์ข้าวคุณภาพ</span>
+                            <span class="lang-en">Quality Rice Seed Contest</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Activities Section -->
+    <section id="activities" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-end mb-12 animate-on-scroll">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 mt-2">
+                        <span class="lang-th">กิจกรรมและประเพณี</span>
+                        <span class="lang-en">Activities & Traditions</span>
+                    </h2>
+                    <p class="text-gray-500">
+                        <span class="lang-th">สืบสานวัฒนธรรมท้องถิ่นชาวนาพละ</span>
+                        <span class="lang-en">Preserving Na Phla local culture</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Activity 1 -->
+                <div class="bg-stone-50 rounded-2xl overflow-hidden shadow-lg animate-on-scroll hover:shadow-xl transition-shadow">
+                    <img src="image/makemerit.jpg" 
+                         alt="รับขวัญข้าวใหม่" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="text-purple-600 text-xs font-bold mb-2">
+                            <span class="lang-th">กุมภาพันธ์ - มีนาคม</span>
+                            <span class="lang-en">February - March</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">
+                            <span class="lang-th">ประเพณีทำบุญรับขวัญข้าวใหม่</span>
+                            <span class="lang-en">Rice Blessing Ceremony</span>
+                        </h3>
+                        <p class="text-gray-600 text-sm">
+                            <span class="lang-th">ชาวนานำข้าวใหม่ที่เก็บเกี่ยวแล้วไปถวายบูชาแด่พระพุทธ พระธรรม พระสงฆ์ เพื่อความเป็นสิริมงคล</span>
+                            <span class="lang-en">Farmers offer newly harvested rice to worship the Triple Gem for prosperity.</span>
+                        </p>
+                    </div>
+                </div>
+                 <!-- Activity 2 -->
+                 <div class="bg-stone-50 rounded-2xl overflow-hidden shadow-lg animate-on-scroll delay-100 hover:shadow-xl transition-shadow">
+                    <img src="image/dragthemonk.jpg" 
+                         alt="ลากพระ" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="text-purple-600 text-xs font-bold mb-2">
+                            <span class="lang-th">ตุลาคม</span>
+                            <span class="lang-en">October</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">
+                            <span class="lang-th">ประเพณีลากพระ</span>
+                            <span class="lang-en">Chak Phra Tradition</span>
+                        </h3>
+                        <p class="text-gray-600 text-sm">
+                            <span class="lang-th">ร่วมสืบสานประเพณีลากพระและวัฒนธรรมสัมพันธ์ พร้อมกิจกรรมบุญเดือนสิบ</span>
+                            <span class="lang-en">Participating in the pulling of the Buddha image tradition and cultural exchange during the Tenth Lunar Month Festival.</span>
+                        </p>
+                    </div>
+                </div>
+                 <!-- Activity 3 -->
+                 <div class="bg-stone-50 rounded-2xl overflow-hidden shadow-lg animate-on-scroll delay-200 hover:shadow-xl transition-shadow">
+                    <img src="image/community.jpg" 
+                         alt="แหล่งเรียนรู้" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="text-purple-600 text-xs font-bold mb-2">
+                            <span class="lang-th">ตลอดปี</span>
+                            <span class="lang-en">All Year Round</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">
+                            <span class="lang-th">ศูนย์เรียนรู้ชุมชน</span>
+                            <span class="lang-en">Community Learning Center</span>
+                        </h3>
+                        <p class="text-gray-600 text-sm">
+                            <span class="lang-th">เป็นแหล่งเรียนรู้การทำนาแบบประณีต และการแปรรูปข้าว ต้อนรับคณะศึกษาดูงานจากทั่วประเทศ</span>
+                            <span class="lang-en">A learning center for refined rice farming and processing, welcoming study groups from all over the country.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-stone-900 text-stone-400 py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <div>
+                    <h4 class="text-white text-xl font-bold mb-6">
+                        <span class="lang-th">นาพละ</span>
+                        <span class="lang-en">Na Phla</span>
+                    </h4>
+                    <p class="mb-6 text-sm italic">
+                        <span class="lang-th">"แผ่นดินศรีวิชัย เลื่อมใสพระพุทธสิหิงค์ ข้าวตรังงามจริง นาพละยิ่งเจริญไกล"</span>
+                        <span class="lang-en">"Land of Srivijaya, Faith in Phra Phuttha Sihing, Beautiful Trang Rice, Na Phla prospers far and wide."</span>
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-purple-600 hover:text-white transition-all">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-white text-lg font-bold mb-6">
+                        <span class="lang-th">ติดต่อเรา</span>
+                        <span class="lang-en">Contact Us</span>
+                    </h4>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="user" class="mt-1 text-purple-500 w-5 h-5 shrink-0"></i>
+                            <span>
+                                <span class="lang-th">นางกุหลาบ หนูเริก (ประธานกลุ่ม)</span>
+                                <span class="lang-en">Mrs. Kulap Nurerk (President)</span>
+                            </span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="map-pin" class="mt-1 text-purple-500 w-5 h-5 shrink-0"></i>
+                            <span>
+                                <span class="lang-th">32/3 หมู่ที่ 9 ตำบลนาพละ อำเภอเมืองตรัง จังหวัดตรัง 92000</span>
+                                <span class="lang-en">32/3 Moo 9, Na Phla Subdistrict, Mueang Trang District, Trang 92000</span>
+                            </span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="phone" class="text-purple-500 w-5 h-5 shrink-0"></i>
+                            <span>089-645-1814</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white text-lg font-bold mb-6">
+                        <span class="lang-th">ลิงก์ด่วน</span>
+                        <span class="lang-en">Quick Links</span>
+                    </h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#home" class="hover:text-purple-400 transition-colors"><span class="lang-th">หน้าแรก</span><span class="lang-en">Home</span></a></li>
+                        <li><a href="#about" class="hover:text-purple-400 transition-colors"><span class="lang-th">ตำนานข้าว</span><span class="lang-en">Story</span></a></li>
+                        <li><a href="#product" class="hover:text-purple-400 transition-colors"><span class="lang-th">สินค้าของเรา</span><span class="lang-en">Products</span></a></li>
+                        <li><a href="#activities" class="hover:text-purple-400 transition-colors"><span class="lang-th">กิจกรรม</span><span class="lang-en">Activities</span></a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white text-lg font-bold mb-6">
+                        <span class="lang-th">แผนที่</span>
+                        <span class="lang-en">Map</span>
+                    </h4>
+                    <!-- Map Section: Added onclick to open modal -->
+                    <div onclick="openMapModal()" class="w-full h-40 rounded-lg overflow-hidden relative group cursor-pointer border border-stone-700">
+                        <img src="https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?q=80&w=1931&auto=format&fit=crop" 
+                             alt="Map Location" 
+                             class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/0 transition-colors">
+                            <div class="bg-stone-900/80 p-2 rounded-full backdrop-blur-sm">
+                                <i data-lucide="map-pin" class="text-white w-6 h-6"></i>
+                            </div>
+                        </div>
+                        <span class="absolute bottom-2 right-2 text-xs text-white bg-black/50 px-2 py-1 rounded">
+                            <span class="lang-th">คลิกเพื่อขยายแผนที่</span>
+                            <span class="lang-en">Click to expand map</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-stone-800 mt-12 pt-8 text-center text-xs">
+                
+                <div class="text-stone-500 space-y-1">
+                    <p class="font-semibold text-stone-400">
+                        <span class="lang-th">ผู้จัดทำเว็บไซต์</span>
+                        <span class="lang-en">Website Creator</span>
+                    </p>
+                    <p>
+                        <span class="lang-th">นายพงษ์พัฒน์ แก้วประชุม</span>
+                        <span class="lang-en">Mr. Phongphat Kaewprachum</span>
+                    </p>
+                    <p>
+                        <span class="lang-th">นักศึกษา ปวส. วิทยาลัยอาชีวศึกษาโปลีเทคนิคตรัง</span>
+                        <span class="lang-en">High Vocational Certificate Student, Poly Technic College Trang</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Map Modal (Lightbox) -->
+    <div id="map-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4" onclick="closeMapModal()">
+        <div class="relative max-w-4xl w-full bg-white rounded-lg shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+            <!-- Close Button -->
+            <button onclick="closeMapModal()" class="absolute top-2 right-2 md:top-4 md:right-4 z-10 w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            
+            <!-- Map Image Large -->
+            <div class="aspect-video w-full bg-stone-200">
+                <img src="image/mapnapra.jpg" 
+                     alt="Large Map" 
+                     class="w-full h-full object-cover">
+            </div>
+            
+            <!-- Modal Content/Footer -->
+            <div class="p-6 bg-white border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h3 class="font-bold text-lg text-gray-900">
+                        <span class="lang-th">แผนที่ตั้งวิสาหกิจชุมชน</span>
+                        <span class="lang-en">Community Enterprise Location</span>
+                    </h3>
+                    <p class="text-sm text-gray-500">
+                        <span class="lang-th">ตำบลนาพละ อำเภอเมืองตรัง จังหวัดตรัง</span>
+                        <span class="lang-en">Na Phla Subdistrict, Mueang Trang District, Trang</span>
+                    </p>
+                </div>
+                <a href="https://www.google.com/maps/search/?api=1&query=32/3+Moo+9+Na+Phla+Subdistrict+Mueang+Trang" 
+                   target="_blank" 
+                   class="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-full font-medium transition-colors flex items-center gap-2">
+                    <span class="lang-th">เปิดใน Google Maps</span>
+                    <span class="lang-en">Open in Google Maps</span>
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript logic -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Language Switcher Logic
+        let currentLang = 'th'; // Default language
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'th' ? 'en' : 'th';
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const thElements = document.querySelectorAll('.lang-th');
+            const enElements = document.querySelectorAll('.lang-en');
+
+            if (currentLang === 'en') {
+                thElements.forEach(el => el.style.display = 'none');
+                enElements.forEach(el => el.style.display = 'inline'); 
+                
+                // Specific fix for visibility
+                enElements.forEach(el => {
+                     el.classList.remove('hidden');
+                });
+                thElements.forEach(el => el.classList.add('hidden'));
+
+            } else {
+                enElements.forEach(el => el.style.display = 'none');
+                thElements.forEach(el => {
+                    el.style.display = ''; 
+                    el.classList.remove('hidden');
+                });
+                enElements.forEach(el => el.classList.add('hidden'));
+            }
+        }
+
+        // Initial setup
+        updateLanguageDisplay();
+
+        // Map Modal Functions
+        function openMapModal() {
+            const modal = document.getElementById('map-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            // Re-render icons inside modal if needed, though they are static
+            lucide.createIcons();
+            document.body.style.overflow = 'hidden'; // Prevent scrolling background
+        }
+
+        function closeMapModal() {
+            const modal = document.getElementById('map-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        const navTitle = document.getElementById('nav-title');
+        const navSubtitle = document.getElementById('nav-subtitle');
+        const desktopMenu = document.getElementById('desktop-menu');
+        
+        window.addEventListener('scroll', () => {
+            const menuBtnIcon = document.querySelector('#menu-btn svg') || document.querySelector('#menu-btn i');
+            const menuBtnIconWrapper = document.getElementById('menu-btn');
+
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-white', 'shadow-md', 'py-2');
+                navbar.classList.remove('bg-transparent', 'py-4', 'text-white');
+                navbar.classList.add('text-gray-800');
+                
+                navTitle.classList.add('text-purple-900');
+                navSubtitle.classList.remove('text-purple-100');
+                navSubtitle.classList.add('text-purple-700');
+                
+                desktopMenu.classList.remove('text-white');
+                desktopMenu.classList.add('text-gray-600');
+
+                if(menuBtnIcon) menuBtnIcon.style.color = '#4B5563';
+                if(menuBtnIconWrapper) menuBtnIconWrapper.style.color = '#4B5563';
+            } else {
+                navbar.classList.remove('bg-white', 'shadow-md', 'py-2', 'text-gray-800');
+                navbar.classList.add('bg-transparent', 'py-4', 'text-white');
+                
+                navTitle.classList.remove('text-purple-900');
+                navSubtitle.classList.add('text-purple-100');
+                navSubtitle.classList.remove('text-purple-700');
+                
+                desktopMenu.classList.add('text-white');
+                desktopMenu.classList.remove('text-gray-600');
+
+                if(menuBtnIcon) menuBtnIcon.style.color = '#ffffff';
+                if(menuBtnIconWrapper) menuBtnIconWrapper.style.color = '#ffffff';
+            }
+        });
+
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        let isMenuOpen = false;
+
+        menuBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.classList.add('flex');
+                menuBtn.innerHTML = '<i data-lucide="x" class="w-7 h-7"></i>';
+            } else {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+                menuBtn.innerHTML = '<i data-lucide="menu" class="w-7 h-7"></i>';
+            }
+            lucide.createIcons(); 
+            
+            const icon = menuBtn.querySelector('svg') || menuBtn.querySelector('i');
+            if(icon) {
+                 icon.style.color = window.scrollY > 50 ? '#4B5563' : '#ffffff';
+            }
+            menuBtn.style.color = window.scrollY > 50 ? '#4B5563' : '#ffffff';
+        });
+
+        // Close mobile menu when clicking a link
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                isMenuOpen = false;
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+                menuBtn.innerHTML = '<i data-lucide="menu" class="w-7 h-7"></i>';
+                lucide.createIcons();
+                
+                const icon = menuBtn.querySelector('svg') || menuBtn.querySelector('i');
+                if(icon) {
+                    icon.style.color = window.scrollY > 50 ? '#4B5563' : '#ffffff';
+                }
+                menuBtn.style.color = window.scrollY > 50 ? '#4B5563' : '#ffffff';
+            });
+        });
+
+        // Intersection Observer for Animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        const animatedElements = document.querySelectorAll('.animate-on-scroll');
+        animatedElements.forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
